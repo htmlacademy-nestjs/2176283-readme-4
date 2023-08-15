@@ -9,3 +9,52 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model PostVideo {
+  postId Int      @id @default(autoincrement()) @map("post_id")
+  title  String   @default("")
+  url    String   @default("")
+  tag    String[]
+  userId String?  @map("user_id")
+
+  @@map("posts_video")
+}
+
+model PostText {
+  postId  Int      @id @default(autoincrement()) @map("post_id")
+  preview String   @default("")
+  text    String   @default("")
+  tag     String[]
+  userId  String?  @map("user_id")
+
+  @@map("posts_text")
+}
+
+model PostCitation {
+  postId Int      @id @default(autoincrement()) @map("post_id")
+  text   String   @default("")
+  author String   @default("")
+  tag    String[]
+  userId String?  @map("user_id")
+
+  @@map("posts_citation")
+}
+
+model PostPhoto {
+  postId Int      @id @default(autoincrement()) @map("post_id")
+  foto   String   @default("")
+  tag    String[]
+  userId String?  @map("user_id")
+
+  @@map("posts_photo")
+}
+
+model PostUrl {
+  postId      Int      @id @default(autoincrement()) @map("post_id")
+  url         String   @default("")
+  description String?
+  tag         String[]
+  userId      String?  @map("user_id")
+
+  @@map("posts_url")
+}

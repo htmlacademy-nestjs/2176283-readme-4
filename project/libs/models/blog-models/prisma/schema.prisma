@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "../../../../node_modules/.prisma/client"
+  output   = "../../../../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -11,62 +11,58 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model PostVideo {
-  postId Int     @id @default(autoincrement()) @map("post_id")
-  title  String  @default("")
-  url    String  @default("")
-  tag    String?
-  userId String? @map("user_id")
+model Post {
+  postId        Int              @id @default(autoincrement()) @map("post_id")
+  type          PublicationType
+  userId        String?          @map("user_id")
+  createdAt     DateTime         @default(now()) @map("created_at")
+  publishedAt   DateTime         @updatedAt @map("publish_at")
+  state         PublicationState @default(published)
+  likesCount    Int              @map("likes_count")
+  commentsCount Int              @map("comments_count")
+  title         String?
+  url           String?
+  tag           String?
+  preview       String?
+  text          String?
+  author        String?
+  photo         String?
+  description   String?
+  comments      Comment[]
+  likes         Like[]
 
-  @@map("posts_video")
-}
-
-model PostText {
-  postId  Int     @id @default(autoincrement()) @map("post_id")
-  preview String  @default("")
-  text    String  @default("")
-  tag     String?
-  userId  String? @map("user_id")
-
-  @@map("posts_text")
-}
-
-model PostCitation {
-  postId Int     @id @default(autoincrement()) @map("post_id")
-  text   String  @default("")
-  author String  @default("")
-  tag    String?
-  userId String? @map("user_id")
-
-  @@map("posts_citation")
-}
-
-model PostPhoto {
-  postId Int     @id @default(autoincrement()) @map("post_id")
-  foto   String  @default("")
-  tag    String?
-  userId String? @map("user_id")
-
-  @@map("posts_photo")
-}
-
-model PostUrl {
-  postId      Int     @id @default(autoincrement()) @map("post_id")
-  url         String  @default("")
-  description String?
-  tag         String?
-  userId      String? @map("user_id")
-
-  @@map("posts_url")
+  @@map("posts")
 }
 
 model Comment {
   message   String
   commentId Int      @id @default(autoincrement()) @map("comment_id")
   userId    String   @map("user_id")
+  post      Post     @relation(fields: [postId], references: [postId], onDelete: Cascade, onUpdate: Cascade)
   postId    Int      @map("post_id")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("comments")
+}
+
+model Like {
+  post            Post     @relation(fields: [postId], references: [postId], onDelete: Cascade, onUpdate: Cascade)
+  postId          Int      @id @unique @map("post_id")
+  likedByUsersIds String[] @map("liked_by_ids")
+
+  @@map("likes")
+}
+
+enum PublicationType {
+  video
+  text
+  quote
+  photo
+  link
+}
+
+enum PublicationState {
+  published
+  draft
 }

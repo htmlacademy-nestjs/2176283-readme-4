@@ -7,16 +7,16 @@ async function fillDb() {
     where: { postId: 1 },
     update: {},
     create: {
-      usrId: '1',
+      userId: '1',
       type: "photo",
       photo: "landscape.jpg",
       likesCount: 0,
       commentsCount: 1,
-      coments: {
+      comments: {
         create: [
           {
             userId: '2',
-            text: 'Удивительно',
+            message: 'Удивительно',
           }
         ]
       }
@@ -34,7 +34,6 @@ async function fillDb() {
       likes: {
         create: [
           {
-            postId: 2,
             likedByUsersIds: ['3', '9', '2']
           }
         ]

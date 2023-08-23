@@ -32,4 +32,14 @@ export class BlogCommentRepository implements CRUDRepository<BlogCommentEntity, 
       data: { ...item.toObject(), commentId }
     });
   }
+
+  public find(ids: number[] = []): Promise<Comment[]> {
+    return this.prisma.comment.findMany({
+      where: {
+        commentId: {
+          in: ids.length > 0 ? ids : undefined
+        }
+      }
+    });
+  }
 }

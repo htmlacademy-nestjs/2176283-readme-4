@@ -4,7 +4,7 @@ import { fillObject } from '@project/util/util-core';
 import { CommentRdo } from './rdo/comment.rdo';
 import { CreateCommentDto } from './dto/create-comment.dto';
 
-@Controller('categories')
+@Controller('comments')
 export class BlogCommentController {
   constructor(
     private readonly blogCommentService: BlogCommentService
